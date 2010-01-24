@@ -20,10 +20,15 @@ for HTTP clients on the server to issue requests like
 
     DELETE http://client16b759c4/item/78
 
-and have then tunnelled to the browser via a WebSocket.
+and have then tunnelled to the browser via a WebSocket.  (This hostname
+works because NodeJS is used as a HTTP proxy.)
+
+## Status/TODO
 
 At the moment, HTTP requests can be passed back and forth, but there's no
-easy way to parse and handle the requests on the client side.
+way to parse and handle the requests on the client side.
+WebSocket-tunnelled HTTP requests can't be chunked (in either direction),
+but the client can respond out of order (messages have an id).
 
 ## Installation
 
@@ -77,5 +82,3 @@ Server-initiated requests:
 
   where `id` is equal to the request id.  (Not the client id!)
   1. `Hello, World` should appear on the server.
-     
-  
