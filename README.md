@@ -20,8 +20,8 @@ for HTTP clients on the server to issue requests like
 
     DELETE http://client16b759c4/item/78
 
-and have then tunnelled to the browser via a WebSocket.  (This hostname
-works because NodeJS is used as a HTTP proxy.)
+to a HTTP proxy running on NodeJS, and have then tunnelled to the browser
+via a WebSocket.
 
 ## Status/TODO
 
