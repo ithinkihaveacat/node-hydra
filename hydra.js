@@ -65,9 +65,11 @@ HydraResponse.prototype.finish = function() {
 function Hydra(http, ws) {
     this.http = http;
     this.ws = ws;
+    // The WebSocket server listens to events emitted by the requestEmitter,
+    // and writes responses to the responseEmitter.
+    this.requestEmitter = new events.EventEmitter();
+    this.responseEmitter = new events.EventEmitter();
 }
-
-Hydra.prototype = Object.create(events.EventEmitter.prototype);
 
 Hydra.prototype.listen = function(http_port, ws_port) {
     
@@ -89,16 +91,16 @@ Hydra.prototype.listen = function(http_port, ws_port) {
 
             sys.debug("Sending message: " + JSON.stringify(message));
             
-            self.addTimedListener("response:" + message.id, responsePromise);
+            self.responseEmitter.addTimedListener(message.id, responsePromise);
             
             ws.send(JSON.stringify(message));
             
         };
         
-        self.addListener("request:" + clientid, requestHandler);
+        self.requestEmitter.addListener(clientid, requestHandler);
         
         ws.addListener("close", function() {
-            self.removeListener("request:" + clientid, requestHandler);
+            self.requestEmitter.removeListener(clientid, requestHandler);
         });
         
         ws.addListener("connect", function(resource) {
@@ -135,7 +137,7 @@ Hydra.prototype.listen = function(http_port, ws_port) {
                 // perhaps client has been too slow in replying, or
                 // trying to spoof responses.
             
-                self.emit("response:" + message.id, message);
+                self.responseEmitter.emit(message.id, message);
                 
             } else if (message.type == "request") {
                 
@@ -148,6 +150,15 @@ Hydra.prototype.listen = function(http_port, ws_port) {
                         clientid: clientid,
                         headers: response.header,
                         body: response.body
+                    }));
+                });
+                response.addListener("error", function() {
+                    ws.send(JSON.stringify({
+                        type: "response",
+                        clientid: clientid,
+                        status: 504,
+                        headers: { "Content-Type": "text/plain" },
+                        body: "Gateway Timeout"
                     }));
                 });
                 response.timeout(TIMEOUT);
@@ -250,7 +261,7 @@ Hydra.prototype.serverRequest = function(request, response) {
     // TODO Check whether there actually are any listeners.  (Will
     // eventually time out, though...)
 
-    self.emit("request:" + clientid, message, promise);
+    self.requestEmitter.emit(clientid, message, promise);
 
 };
 
