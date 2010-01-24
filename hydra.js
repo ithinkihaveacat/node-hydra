@@ -168,12 +168,14 @@ Hydra.prototype.listen = function(http_port, ws_port) {
 
 };
 
+/**
+ * @param {Object} request not a http.ServerRequest, but pretends to be one
+ * @param {HydraResponse} response not a http.ServerResponse, but pretends to be one
+ */
+
 Hydra.prototype.clientRequest = function(request, response) {
     
 //    sys.debug("In clientRequest");
-    
-    // request is not a http.ServerRequest, but it must have the same properties as one
-    // response is not a http.ServerResponse either, it's a HydraResponse but which behaves the same
     
     var part = require('url').parse(request.url);
     part.port = part.port || 80;
