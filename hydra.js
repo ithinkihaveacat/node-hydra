@@ -55,7 +55,7 @@ HydraResponse.prototype.sendHeader = function(headers) {
 };
 
 HydraResponse.prototype.sendBody = function(body) {
-	this.body = body.substr(0, 20) + "...";
+	this.body = body.substr(0, 80) + "...";
 };
 
 HydraResponse.prototype.finish = function() {
@@ -69,8 +69,6 @@ function Hydra(http, ws) {
 
 Hydra.prototype = Object.create(events.EventEmitter.prototype);
 
-Hydra.prototype.TIMEOUT = 60000;
-
 Hydra.prototype.listen = function(http_port, ws_port) {
 	
 	var self = this;
@@ -83,8 +81,7 @@ Hydra.prototype.listen = function(http_port, ws_port) {
 
 	this.wsd = this.ws(function(ws) {
 		
-		var clientid = Math.floor(Math.random() * 4294967296).toString(16);
-		clientid = "qqqqqq";
+		var clientid = "client" + Math.floor(Math.random() * 4294967296).toString(16);
 		
 		var requestHandler = function(message, responsePromise) {
 
@@ -104,7 +101,8 @@ Hydra.prototype.listen = function(http_port, ws_port) {
 			self.removeListener("request:" + clientid, requestHandler);
 		});
 		
-		ws.addListener("connect", function(resource) { 
+		ws.addListener("connect", function(resource) {
+            sys.debug("Client " + clientid + " connected");
 			ws.send(JSON.stringify({
 				type: "status",
 				message: "Client id is: " + clientid
@@ -163,7 +161,7 @@ Hydra.prototype.listen = function(http_port, ws_port) {
 	});
 	
 	this.wsd.listen(ws_port);
-	sys.puts("Websocket server listening at http://127.0.0.1:" + ws_port);
+	sys.puts("WebSocket server listening at http://127.0.0.1:" + ws_port);
 	
 	this.httpd.listen(http_port);
 	sys.puts("Httpd server listening at http://127.0.0.1:" + http_port);
@@ -172,7 +170,7 @@ Hydra.prototype.listen = function(http_port, ws_port) {
 
 Hydra.prototype.clientRequest = function(request, response) {
 	
-	sys.debug("In clientRequest");
+//	sys.debug("In clientRequest");
 	
 	// request is not a http.ServerRequest, but it must have the same properties as one
 	// response is not a http.ServerResponse either, it's a HydraResponse but which behaves the same
@@ -180,8 +178,8 @@ Hydra.prototype.clientRequest = function(request, response) {
 	var part = require('url').parse(request.url);
 	part.port = part.port || 80;
 	
-	sys.debug("Client wants:");
-	sys.debug(sys.inspect(part));
+//	sys.debug("Client wants:");
+//	sys.debug(sys.inspect(part));
 	
 	var http = require('http').createClient(part.port, part.hostname);
 
@@ -214,10 +212,9 @@ Hydra.prototype.serverRequest = function(request, response) {
 	
 	var self = this;
 		
-	sys.debug("In serverRequest");
+//	sys.debug("In serverRequest");
 	
 	var clientid = require('url').parse(request.url).hostname;
-	clientid = "qqqqqq";
 	
 	// Issue the request to the client
 	
