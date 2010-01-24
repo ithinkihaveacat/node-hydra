@@ -73,7 +73,7 @@ Server-initiated requests:
   received.  The request will include a request id.  To send a response, enter the
   following in the input box 
 
-        {"type":"response","id":"7d87e74","body":"Hello, World"}
+        {"type":"response","body":"Hello, World","id":"7d87e74"}
 
   where `id` is equal to the request id.  (Not the client id!)
   1. `Hello, World` should appear on the server.

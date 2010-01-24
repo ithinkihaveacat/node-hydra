@@ -1,6 +1,6 @@
 var http = require("http");
 
-var ws = require("./ws"); // The ws.js from http://github.com/ncr/node.ws.js
+var ws = require("./ws"); // Get ws.js from http://github.com/ncr/node.ws.js
 
 var hydra = require("./hydra");
 
