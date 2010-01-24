@@ -234,7 +234,6 @@ Hydra.prototype.serverRequest = function(request, response) {
     var message = {
         type: "request",
         url: request.url,
-        id: request.id,
         method: request.method,
         headers: request.headers,
         body: request.body,
