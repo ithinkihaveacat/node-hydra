@@ -1,6 +1,6 @@
 // Client request:
 // 
-// {type:"request",method:"GET",url:"http://beebo.org/"}
+// {type:"request",method:"GET",url:"http://beebo.org/",id:"jjjj"}
 //
 // Response:
 //
@@ -147,6 +147,7 @@ Hydra.prototype.listen = function(http_port, ws_port) {
                 response.addListener("success", function() { 
                     ws.send(JSON.stringify({
                         type: "response",
+                        id: message.id, // client must generate ids
                         clientid: clientid,
                         headers: response.header,
                         body: response.body
@@ -155,6 +156,7 @@ Hydra.prototype.listen = function(http_port, ws_port) {
                 response.addListener("error", function() {
                     ws.send(JSON.stringify({
                         type: "response",
+                        id: message.id,
                         clientid: clientid,
                         status: 504,
                         headers: { "Content-Type": "text/plain" },
