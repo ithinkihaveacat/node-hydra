@@ -1,58 +1,66 @@
 var sys = require('sys'),
     http = require('http'),
-    router = require('./router');
+    router = require('./router'),
+    url = require('url');
 
-var handle = router.createSimple({
+function MyRouter(obj, req, res) {
+    sys.debug("obj = " + sys.inspect(obj));
+    sys.debug("req = " + sys.inspect(req));
+    sys.debug("res = " + sys.inspect(res));
+    this.obj = obj;
+    this.req = req;
+    this.res = res;
+    this.url = url.parse(req.url, true)
+    sys.debug("this = " + sys.inspect(this));
+}
 
-    name: "Clem",
+MyRouter.prototype = {
 
     greet: function() {
-        return "Hello, " + this.name;
+        return "Hello, " + this.obj.name;
     },
 
     // curl -s http://127.0.0.1:8000/name
 
-    "GET /name": function(obj) {
+    "GET /name": function() {
 
         var body = "", self = this;
 
-        obj.req.addListener("body", function(s) {
+        self.req.addListener("body", function(s) {
             body += s;
         });
 
-        obj.req.addListener("complete", function() {
-            obj.res.sendHeader(200, {"Content-Type": "application/json"});
-            obj.res.sendBody(JSON.stringify(self.greet()) + "\n");
-            obj.res.finish();
+        self.req.addListener("complete", function() {
+            self.res.sendHeader(200, {"Content-Type": "application/json"});
+            self.res.sendBody(JSON.stringify(self.greet()) + "\n");
+            self.res.finish();
         });
 
     },
 
     // curl -s -X PUT -d '"Michael"' http://127.0.0.1:8000/name
 
-    "PUT /name": function(obj) {
+    "PUT /name": function() {
 
         var body = "", self = this;
 
-        obj.req.addListener("body", function(s) {
+        self.req.addListener("body", function(s) {
             body += s;
         });
         
-        obj.req.addListener("complete", function() {
-            self.name = JSON.parse(body); // Assumes body is JSON
-            sys.debug("Setting name to " + self.name);
-            obj.res.sendHeader(200, {"Content-Type": "application/json"});
-            obj.res.sendBody(JSON.stringify(self.greet()) + "\n");
-            obj.res.finish();
+        self.req.addListener("complete", function() {
+            self.obj.name = JSON.parse(body); // Assumes body is JSON
+            sys.debug("Setting name to " + self.obj.name);
+            self.res.sendHeader(200, {"Content-Type": "application/json"});
+            self.res.sendBody(JSON.stringify(self.greet()) + "\n");
+            self.res.finish();
         });
 
     }
 
-});
+};
 
-http.createServer(function (req, res) {
-    handle(req, res);
-}).listen(8000);
+http.createServer(router.createSimple(MyRouter, {})).listen(8000);
 
 sys.puts('Server running at http://127.0.0.1:8000/');
 
