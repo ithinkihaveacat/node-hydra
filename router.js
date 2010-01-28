@@ -26,13 +26,13 @@ exports.createSimple = function(rules) {
 
         for (i = 0, l = m.length; i < l; i++) {
             if ((parts = url.parse(req.url).pathname.match(m[i][0]))) {
-//                sys.debug(req.method + " " + req.url + " OK");
+                sys.debug(req.method + " " + req.url + " OK");
                 m[i][1].call(rules, req, res, parts);
                 return;
             }
         }
 
-//        sys.debug(req.method + " " + req.url + " Not Found");
+        sys.debug(req.method + " " + req.url + " Not Found");
 
         res.sendHeader(404);
         res.finish();
