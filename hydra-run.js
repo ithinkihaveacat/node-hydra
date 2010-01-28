@@ -1,10 +1,14 @@
 // Client request:
 //
-// {type:"request",method:"GET",url:"http://beebo.org/",id:"jjjj"}
+//   {type:"request",method:"GET",url:"http://beebo.org/",id:"jjjj"}
 //
-// Response:
+// Server request:
 //
-// {"type":"response",body:"jjjj","id":"36057424"}
+//   $ http_proxy=http://127.0.0.1:8000/ wget -q -S -O - http://client5f99eaa4/
+//
+// ... client response:
+//
+//   {"type":"response",body:"jjjj","id":"36057424"}
 
 var http = require("http");
 
