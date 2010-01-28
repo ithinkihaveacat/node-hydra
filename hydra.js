@@ -75,13 +75,13 @@ Hydra.prototype.listen = function(http_port, ws_port) {
     
     var self = this;
     
-    this.httpd = this.http(function(request, response) {
+    var httpd = this.http(function(request, response) {
 
         self.serverRequest(request, response);
 
     });
 
-    this.wsd = this.ws(function(ws) {
+    var wsd = this.ws(function(ws) {
         
         var clientid = "client" + Math.floor(Math.random() * 4294967296).toString(16);
         
@@ -173,10 +173,10 @@ Hydra.prototype.listen = function(http_port, ws_port) {
         
     });
     
-    this.wsd.listen(ws_port);
+    wsd.listen(ws_port);
     sys.puts("WebSocket server listening at http://127.0.0.1:" + ws_port);
     
-    this.httpd.listen(http_port);
+    httpd.listen(http_port);
     sys.puts("Httpd server listening at http://127.0.0.1:" + http_port);
 
 };
@@ -238,7 +238,7 @@ Hydra.prototype.serverRequest = function(request, response) {
         url: request.url,
         method: request.method,
         headers: request.headers,
-        body: request.body,
+        body: request.body, // ??? Is this correct?  Think we actually need to sit on request and wait for the complete event--?
         clientid: clientid
     };
     
