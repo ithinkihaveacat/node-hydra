@@ -229,7 +229,7 @@ Hydra.prototype.serverRequest = function(request, response) {
             url: request.url,
             method: request.method,
             headers: request.headers,
-            body: request.body, // ??? Is this correct?  Think we actually need to sit on request and wait for the complete event--?
+            body: body,
             clientid: clientid
         };
 
