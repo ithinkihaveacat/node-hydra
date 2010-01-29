@@ -19,11 +19,7 @@ MyRouter.prototype = {
 
     "GET /user/(.*)": function(req, res, matches) {
 
-        var body = "", self = this;
-
-        req.addListener("body", function(s) {
-            body += s;
-        });
+        var self = this;
 
         req.addListener("complete", function() {
             self.send(res);
