@@ -3,22 +3,24 @@ var url = require('url');
 
 exports.createSimple = function(rules) {
 
-    var regexp = /^\s*((\S*)\s+)?(\S*)\s*$/, parts = null, matchers = {};
+    var regexp = /^\s*(\S*)\s+(\S*)\s*$/, parts = null, matchers = {};
 
     // TODO Hash matching on URL strings i.e. if not regexp
 
     for (r in rules) {
 
-        parts = r.match(regexp);
+        if ((parts = r.match(regexp))) {
 
-        if (!matchers[parts[2]]) {
-            matchers[parts[2]] = [];
+            if (!matchers[parts[1]]) {
+                matchers[parts[1]] = [];
+            }
+
+            matchers[parts[1]].push([
+                new RegExp(parts[2]),
+                rules[r]
+            ]);
+
         }
-
-        matchers[parts[2]].push([
-            new RegExp(parts[3]),
-            rules[r]
-        ]);
 
     }
 
