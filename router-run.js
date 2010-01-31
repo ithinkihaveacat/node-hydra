@@ -1,6 +1,6 @@
 var sys = require('sys'),
     http = require('http'),
-    router = require('./router'),
+    router = require('./lib/router'),
     url = require('url');
 
 function MyRouter(name) {
@@ -47,6 +47,7 @@ MyRouter.prototype = {
 
 };
 
-http.createServer(router.createSimple(new MyRouter("Clem"))).listen(8000);
+//http.createServer(router.create(new MyRouter("Clem"))).listen(8000);
+http.createServer(router.create(new router.Static("htdocs"))).listen(8000);
 
 sys.puts('Server running at http://127.0.0.1:8000/');

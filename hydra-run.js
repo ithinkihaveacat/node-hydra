@@ -11,8 +11,8 @@
 //   {"type":"response",body:"jjjj","id":"36057424"}
 
 var http = require("http"),
-    ws = require("./ws"), // Get ws.js from http://github.com/ncr/node.ws.js
-    hydra = require("./hydra");
+    ws = require("./lib/ws"), // Get ws.js from http://github.com/ncr/node.ws.js
+    hydra = require("./lib/hydra");
 
 var server = hydra.create(http.createServer, ws.createServer);
 
