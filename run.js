@@ -11,9 +11,15 @@
 //   {"type":"response",body:"jjjj","id":"36057424"}
 
 var http = require("http"),
+    sys = require('sys'),
     ws = require("./lib/ws"), // Get ws.js from http://github.com/ncr/node.ws.js
-    hydra = require("./lib/hydra");
+    hydra = require("./lib/hydra"),
+    router = require("./lib/router");
 
-var server = hydra.create(http.createServer, ws.createServer);
+DEBUG = false;
 
-server.listen(8000, 8080);
+http.createServer(router.create(new router.Static("htdocs"))).listen(8080);
+sys.puts("Static Httpd listening at http://127.0.0.1:8080/");
+
+hydra.create(http.createServer, ws.createServer).listen(8081, 8082);
+
