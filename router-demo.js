@@ -1,7 +1,7 @@
 var sys = require('sys'),
     http = require('http'),
-    router = require('./lib/router'),
-    url = require('url');
+    url = require('url'),
+    router = require('./lib/router');
 
 function MyRouter(name) {
     this.name = name;
@@ -10,26 +10,20 @@ function MyRouter(name) {
 MyRouter.prototype = {
 
     send: function(res) {
-        res.sendHeader(200, {"Content-Type": "application/json"});
+        res.sendHeader(200, { "Content-Type": "application/json" });
         res.sendBody(JSON.stringify(this.name) + "\n");
         res.finish();
     },
 
     // curl -i -s http://127.0.0.1:8000/user/mjs
 
-    "GET /user/(.*)": function(req, res, matches) {
-
-        var self = this;
-
-        req.addListener("complete", function() {
-            self.send(res);
-        });
-
+    "GET /user/.*": function(req, res, matches) {
+        this.send(res);
     },
 
     // curl -i -s -X PUT -d '"Michael"' http://127.0.0.1:8000/user/mjs
 
-    "PUT /user/(.*)": function(req, res, matches) {
+    "PUT /user/.*": function(req, res, matches) {
 
         var body = "", self = this;
 
@@ -47,7 +41,7 @@ MyRouter.prototype = {
 
 };
 
-//http.createServer(router.create(new MyRouter("Clem"))).listen(8000);
-http.createServer(router.create(new router.Static("htdocs"))).listen(8000);
+http.createServer(router.create(new MyRouter("Clem"))).listen(8000);
+//http.createServer(router.create(new router.Static("htdocs"))).listen(8000);
 
 sys.puts('Server running at http://127.0.0.1:8000/');
