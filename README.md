@@ -4,53 +4,52 @@ Double-headed HTTP
 
 ## Introduction
 
-This is pretty rough and unfinished, but the eventual aim is to make it
-possible for:
+Hydra works, but is pretty rough and unfinished.  The the eventual aim is to
+make it possible to:
 
-  * HTTP clients running in the browser to make HTTP requests to servers
-  accessible to the webserver (i.e. not much more than cross-domain Ajax;
-  the only real difference is that they requests are tunnelled through a
-  WebSocket)
-  * HTTP clients running on the server to make HTTP requests to servers
-  running in the browser
+  * Make browser-initiated HTTP requests to the servers.
+  * Make server-initiated HTTP requests to browsers.
   
-i.e. both the client and server can push and pull, though the second feature
-is more interesting than the first.  When it's working, it'll be possible
-for HTTP clients on the server to issue requests like
+i.e. both the client and server can push and pull.  In particular, HTTP
+clients running on the *server* can issue requests like
 
     DELETE http://client16b759c4/item/78
 
-to a HTTP proxy running on NodeJS, and have then tunnelled to the browser
-via a WebSocket.
+to a HTTP proxy running NodeJS, and have then tunnelled to the browser via a
+WebSocket.
 
 ## Status/TODO
 
 At the moment, HTTP requests can be passed back and forth, but there's no
-way to parse and handle the requests on the client side.
-WebSocket-tunnelled HTTP requests can't be chunked (in either direction),
-but the client can respond out of order (messages have an id).
+way to parse and handle the requests on the client side. WebSocket-tunnelled
+HTTP requests can't be chunked or streamed (in either direction), though the
+client can respond out of order (messages have an id).
 
 ## Installation
 
 For the server:
 
   1. Download and install [NodeJS](http://nodejs.org/#download).
-  1. Download [ws.js](http://github.com/ncr/node.ws.js/raw/master/lib/ws.js) from
-    the [node.ws.js](http://github.com/ncr/node.ws.js) project.
+  1. Download and install [node.ws.js](http://github.com/ncr/node.ws.js) (a
+  server-side WebSockets implementation for NodeJS) to the parent directory
+  of `node-hydra`. 
+  1. Download and install [ejsgi](http://github.com/isaacs/ejsgi) (a
+  standard for connecting applications to web servers) to the parent
+  directory of `node-hydra`. 
   1. Start the server:
 
         $ node run.js 
-        Websocket server listening at http://127.0.0.1:8080
-        Httpd server listening at http://127.0.0.1:8000
+        Static Httpd listening at http://127.0.0.1:8080/
+        Hydra: WebSocket server listening at http://127.0.0.1:8082
+        Hydra: Httpd server listening at http://127.0.0.1:8081
 
 For the client:
 
-  1. Download [web-socket-js](http://github.com/gimite/web-socket-js).
-  (This is an implementation of WebSockets that uses native WebSockets where
-  available, falling back to Flash if not.)
-  1. Modify `sample.html` so that the `new WebSocket(...)` line points to
-  your WebSocket server.  (`http://127.0.0.1:8080` in the example above.)
-  1. Load `sample.html` in a browser.
+  1. Download and install
+  [web-socket-js](http://github.com/gimite/web-socket-js) (an implementation
+  of WebSockets that uses native WebSockets where available, falling back to
+  Flash if not) to the parent directory of `node-hydra`.
+  1. Load <http://127.0.0.1:8080/> in a browser.
   1. In the browser you should see a simple input box, plus a status message
   giving you your client id.  (Various message should appear as you start up
   and shut down the server.)
@@ -65,7 +64,7 @@ Client-initiated requests:
 
         {"type":"request","method":"GET","url":"http://www.google.com/robots.txt"}
 
-  1. You should see the first few characters of Google's `robots.txt`.
+  1. You should see the Google's `robots.txt`.
 
 Server-initiated requests:
 
