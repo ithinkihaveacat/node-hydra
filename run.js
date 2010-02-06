@@ -12,14 +12,20 @@
 
 DEBUG = true;
 
+require.paths.unshift("../node-scylla/lib");
+require.paths.unshift("../ejsgi/lib");
+require.paths.unshift("../node.ws.js"); // Get ws.js from http://github.com/ncr/node.ws.js
+require.paths.unshift("lib");
+
 var sys = require('sys'),
     http = require('http'),
-    ejsgi = require("../ejsgi/lib/ejsgi"),
-    ws = require("./lib/ws"), // Get ws.js from http://github.com/ncr/node.ws.js
-    hydra = require("./lib/hydra"),
-    router = require("./lib/router");
+    ejsgi = require("ejsgi"),
+    ws = require("ws"), 
+    hydra = require("hydra"),
+    scylla = require("scylla"),
+    Server = require("hydra/static");
     
-ejsgi.Server(new router.Static("htdocs").dispatcher(), "localhost", 8080).start();
+ejsgi.Server(new Server("htdocs").adapter('ejsgi'), "localhost", 8080).start();
 sys.puts("Static Httpd listening at http://127.0.0.1:8080/");
 
 hydra.create(http.createServer, ws.createServer).listen(8081, 8082);
