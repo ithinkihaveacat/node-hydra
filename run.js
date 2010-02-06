@@ -24,8 +24,8 @@ var sys = require('sys'),
     hydra = require("hydra"),
     scylla = require("scylla"),
     Server = require("hydra/static");
-    
-ejsgi.Server(new Server("htdocs").adapter('ejsgi'), "localhost", 8080).start();
+
+ejsgi.Server(new Server(["../web-socket-js", "htdocs"]).adapter('ejsgi'), "localhost", 8080).start();
 sys.puts("Static Httpd listening at http://127.0.0.1:8080/");
 
 hydra.create(http.createServer, ws.createServer).listen(8081, 8082);
