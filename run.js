@@ -10,22 +10,26 @@
 //
 //   {"type":"response",body:"jjjj","id":"36057424"}
 
-DEBUG = true;
-
 require.paths.unshift("../node-scylla/lib");
 require.paths.unshift("../ejsgi/lib");
 require.paths.unshift("../node.ws.js"); // Get ws.js from http://github.com/ncr/node.ws.js
 require.paths.unshift("lib");
+
+DEBUG = true;
 
 var sys = require('sys'),
     http = require('http'),
     ejsgi = require("ejsgi"),
     ws = require("ws"), 
     hydra = require("hydra"),
-    scylla = require("scylla"),
     Server = require("hydra/static");
 
-ejsgi.Server(new Server(["../web-socket-js", "htdocs"]).adapter('ejsgi'), "localhost", 8080).start();
+// The static webserver.
+
+ejsgi.Server(new Server(["htdocs", "../web-socket-js"]).adapter('ejsgi'), "localhost", 8080).start();
 sys.puts("Static Httpd listening at http://127.0.0.1:8080/");
+
+// The WebSockets server.  This requires two ports: one to initiate the connection,
+// and another to handle the socket communication itself.
 
 hydra.create(http.createServer, ws.createServer).listen(8081, 8082);
