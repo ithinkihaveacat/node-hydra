@@ -27,7 +27,7 @@
     
     function init() {
 
-      new Http(ws, function(http) {
+      http = new Http(ws, function(http) {
 
           // Sets up a client side "server".  Try:
           //
@@ -50,6 +50,7 @@
 </head>
 
 <body onload="init();">
+    <p>Nothing much to see here&#8212view source and open Firebug!</p>
 </body>
 
 </html>
