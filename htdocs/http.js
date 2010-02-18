@@ -18,9 +18,15 @@ function Http(websocket, onopen) {
     };
     
     websocket.onmessage = function(e) {
-        if (DEBUG) { console.log("WebSocket: received " + e.data); }
+        if (DEBUG) { console.log("WebSocket: received [" + e.data + "]"); }
 
-        var message = JSON.parse(e.data);
+        var message;
+
+        try {
+            message = JSON.parse(e.data);
+        } catch (exception) {
+            throw exception; // Catch and immediate rethrow gives better stack trace in Chrome
+        }
 
         switch (true) {
 
