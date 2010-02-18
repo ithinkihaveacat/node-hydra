@@ -22,16 +22,18 @@
     // which closes the socket!  (Bug?)
 
     var ws = new WebSocket("ws://localhost:8082/");
-    
+
     function init() {
 
       http = new Http(ws, function(http) {
 
-          // Sets up a client side "server".  Try:
+          // Sets up a client side "server".  On the server, try:
           //
-          //   $ http_proxy=http://127.0.0.1:8081/ curl -s -i -X GET 'http://clientcdf6b03c/'
-          //   $ http_proxy=http://127.0.0.1:8081/ curl -s -i -d 'Michael' -X PUT 'http://clientcdf6b03c/'
-          //   $ http_proxy=http://127.0.0.1:8081/ curl -s -i -X GET 'http://clientcdf6b03c/'
+          //   $ export CLIENTID="client611851c0"
+          //   $ export http_proxy="http://127.0.0.1:8081/"
+          //   $ curl -s -i -X GET "http://$CLIENTID/"
+          //   $ curl -s -i -d 'Michael' -X PUT "http://$CLIENTID/"
+          //   $ curl -s -i -X GET "http://$CLIENTID/"
 
           var hello = new Hello("Clem");
           http.createServer(hello.adapter());
