@@ -79,10 +79,12 @@ Server-initiated requests:
 
   1. On the server, enter
 
-        $ http_proxy=http://127.0.0.1:8081/ curl -s -i -X GET 'http://clientcdf6b03c/'
-        $ http_proxy=http://127.0.0.1:8081/ curl -s -i -d 'Michael' -X PUT 'http://clientcdf6b03c/'
-        $ http_proxy=http://127.0.0.1:8081/ curl -s -i -X GET 'http://clientcdf6b03c/'
+        $ export CLIENTID="client611851c0"
+        $ export http_proxy="http://127.0.0.1:8081/"
+        $ curl -s -i -X GET "http://$CLIENTID/"
+        $ curl -s -i -d 'Michael' -X PUT "http://$CLIENTID/"
+        $ curl -s -i -X GET "http://$CLIENTID/"
 
-    where `client5f99eaa4` is the client id.
+    where `client611851c0` is the client id.
   1. The first command should return `Clem`, and the second and third should
   return `Michael`.  This uses the sample server in `hello.js`.
