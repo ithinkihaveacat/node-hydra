@@ -26,9 +26,8 @@ WebSocket-tunnelled HTTP requests can't be chunked or streamed (in either
 direction), though the client can respond out of order (messages have an
 id).
 
-It has only been tested in Chrome!  The WebSocket library is supposed to
-fallback to Flash for browsers without native support for WebSockets, but
-this doesn't seem to work correctly.
+This has been tested in Chrome and Firefox on OS X.  Chrome supports
+websockets natively; Firefox requires a Flash "shim".
 
 ## Installation
 
@@ -38,9 +37,6 @@ For the server:
   1. Download and install [node.ws.js](http://github.com/ncr/node.ws.js) (a
   server-side WebSockets implementation for NodeJS) to the parent directory
   of `node-hydra`. 
-  1. Download and install [ejsgi](http://github.com/isaacs/ejsgi) (a
-  standard for connecting applications to web servers) to the parent
-  directory of `node-hydra`. 
   1. Start the server:
 
         $ node run.js 

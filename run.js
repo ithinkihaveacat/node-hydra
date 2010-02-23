@@ -19,15 +19,13 @@ DEBUG = true;
 
 var sys = require('sys'),
     http = require('http'),
-    ejsgi = require("ejsgi"),
     ws = require("ws"), 
     hydra = require("hydra"),
     Server = require("hydra/static");
 
 // The static webserver.
 
-ejsgi.Server(new Server(["htdocs", "../web-socket-js"]).adapter('ejsgi'), "localhost", 8080).start();
-//http.createServer(new Server(["htdocs", "../web-socket-js"]).adapter('nodejs')).listen(8080);
+http.createServer(new Server(["htdocs", "../web-socket-js"]).adapter('nodejs')).listen(8080);
 sys.puts("Static Httpd listening at http://127.0.0.1:8080/");
 
 // The WebSockets server.  This requires two ports: one to initiate the connection,
