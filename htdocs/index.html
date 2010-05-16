@@ -21,7 +21,7 @@
     // Must be global or similar, otherwise garbage collected,
     // which closes the socket!  (Bug?)
 
-    var ws = new WebSocket("ws://localhost:8082/");
+    var ws = new WebSocket("ws://localhost:8081/");
 
     function init() {
 
@@ -40,7 +40,8 @@
 
           // Sets up a client side "client", and makes the request.
 
-          http.createClient('GET', 'http://localhost:8080/hello.txt', function(body) { console.log(body); });
+          console.log("'Hello, World!' should appear on the next line");
+          http.createClient('GET', 'http://localhost:8080/hello.txt', function(res) { console.log(res.body); });
 
       });
 

@@ -10,9 +10,8 @@
 //
 //   {"type":"response",body:"jjjj","id":"36057424"}
 
-require.paths.unshift("../node-scylla/lib"); // http://github.com/ithinkihaveacat/node-scylla
-require.paths.unshift("../ejsgi/lib");       // http://github.com/isaacs/ejsgi
-require.paths.unshift("../node.ws.js");      // http://github.com/ncr/node.ws.js
+require.paths.unshift("../node-scylla/lib");           // http://github.com/ithinkihaveacat/node-scylla
+require.paths.unshift("../node-websocket-server/lib"); // http://github.com/miksago/node-websocket-server
 require.paths.unshift("lib");
 
 DEBUG = true;
