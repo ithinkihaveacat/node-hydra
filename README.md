@@ -34,15 +34,15 @@ websockets natively; Firefox requires a Flash "shim".
 For the server:
 
   1. Download and install [NodeJS](http://nodejs.org/#download).
-  1. Download and install [node.ws.js](http://github.com/ncr/node.ws.js) (a
+  1. Download and install
+  [node-websocket-server](http://github.com/miksago/node-websocket-server) (a
   server-side WebSockets implementation for NodeJS) to the parent directory
   of `node-hydra`. 
   1. Start the server:
 
         $ node run.js 
         Static Httpd listening at http://127.0.0.1:8080/
-        Hydra: WebSocket server listening at http://127.0.0.1:8082
-        Hydra: Httpd server listening at http://127.0.0.1:8081
+        Hydra: WebSocket server listening at http://127.0.0.1:8081
 
 For the client:
 
