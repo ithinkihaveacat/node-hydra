@@ -1,0 +1,9 @@
+{ "readme": "http://github.com/isaacs/npm#readme"
+, "version": "0.1.0"
+, "description": "Double-headed HTTP: allow both clients and servers to issue HTTP requests"
+, "main": "./lib/hydra"
+, "author": "Michael Stillwell <mjs@beebo.org>"
+, "name": "hydra"
+, "engines": { "node": ">=0.1.95" }
+, "dependencies": { "websocket-server": ">=1.0.4" }
+}
