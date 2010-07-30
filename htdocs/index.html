@@ -3,50 +3,46 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>Hydra Demo</title>
+  
+  <script type="text/javascript" src="socket.io.js"></script>
+  <script>
+      io.setPath('/');
+  </script>
 
-  <script type="text/javascript" src="swfobject.js"></script>
-  <script type="text/javascript" src="FABridge.js"></script>
-  <script type="text/javascript" src="web_socket.js"></script>
   <script type="text/javascript" src="router.js"></script>
   <script type="text/javascript" src="http.js"></script>
   <script type="text/javascript" src="hello.js"></script>
 
   <script type="text/javascript">
-
-    // Set URL of your WebSocketMain.swf here:
-    WebSocket.__swfLocation = "WebSocketMain.swf";
-
+  
     DEBUG = true;
-
-    // Must be global or similar, otherwise garbage collected,
-    // which closes the socket!  (Bug?)
-
-    var ws = new WebSocket("ws://localhost:8081/");
-
+  
     function init() {
+    
+      websocket = new io.Socket('localhost');
+      websocket.connect();
 
-      http = new Http(ws, function(http) {
+      http = new Http(websocket);
+      
+      // Sets up a client side "server".  On the server, try:
+      //
+      //   $ export CLIENTID="client611851c0"
+      //   $ export http_proxy="http://127.0.0.1:8081/"
+      //   $ curl -s -i -X GET "http://$CLIENTID/"
+      //   $ curl -s -i -d 'Michael' -X PUT "http://$CLIENTID/"
+      //   $ curl -s -i -X GET "http://$CLIENTID/"
 
-          // Sets up a client side "server".  On the server, try:
-          //
-          //   $ export CLIENTID="client611851c0"
-          //   $ export http_proxy="http://127.0.0.1:8081/"
-          //   $ curl -s -i -X GET "http://$CLIENTID/"
-          //   $ curl -s -i -d 'Michael' -X PUT "http://$CLIENTID/"
-          //   $ curl -s -i -X GET "http://$CLIENTID/"
+      var hello = new Hello("Clem");
+      http.createServer(hello.adapter());
+      
+      // Makes a server-side HTTP request
 
-          var hello = new Hello("Clem");
-          http.createServer(hello.adapter());
-
-          // Sets up a client side "client", and makes the request.
-
-          console.log("'Hello, World!' should appear on the next line");
-          http.createClient('GET', 'http://localhost:8080/hello.txt', function(res) { console.log(res.body); });
-
-      });
+      http.createClient('GET', 'http://localhost:8080/hello.txt', function(res) { console.log(res.body); });
+      http.createClient('GET', 'http://localhost:8080/hello.txt', function(res) { console.log(res.body); });
+      http.createClient('GET', 'http://localhost:8080/hello.txt', function(res) { console.log(res.body); });
 
     }
-
+    
   </script>
 </head>
 

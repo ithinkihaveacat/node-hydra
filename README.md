@@ -1,6 +1,6 @@
 # Hydra
 
-Double-headed HTTP
+Double-headed HTTP.
 
 ## Introduction
 
@@ -34,10 +34,10 @@ websockets natively; Firefox requires a Flash "shim".
 For the server:
 
   1. Download and install [NodeJS](http://nodejs.org/#download).
-  1. Download and install
-  [node-websocket-server](http://github.com/miksago/node-websocket-server) (a
-  server-side WebSockets implementation for NodeJS) to the parent directory
-  of `node-hydra`. 
+  1. Download and install the following projects into the parent directory of `node-hydra`:
+    * <http://github.com/ithinkihaveacat/node-scylla.git> - Router for NodeJS
+    * <http://github.com/LearnBoost/Socket.IO-node.git> - WebSocket server
+    * <http://github.com/LearnBoost/Socket.IO.git> - WebSocket client
   1. Start the server:
 
         $ node run.js 
@@ -46,10 +46,6 @@ For the server:
 
 For the client:
 
-  1. Download and install
-  [web-socket-js](http://github.com/gimite/web-socket-js) (an implementation
-  of WebSockets that uses native WebSockets where available, falling back to
-  Flash if not) to the parent directory of `node-hydra`.
   1. Load <http://127.0.0.1:8080/> in Google Chrome.
   1. Open up the JavaScript console.  You should see various message,
   include one giving you your client id.

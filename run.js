@@ -1,33 +1,41 @@
-// Client request:
+//
+// Requirements:
+// 
+// Clone these into the parent directory:
+//
+//   * http://github.com/ithinkihaveacat/node-scylla.git
+//   * http://github.com/LearnBoost/Socket.IO-node.git
+//   * http://github.com/LearnBoost/Socket.IO.git
+//
+// Example client request:
 //
 //   {type:"request",method:"GET",url:"http://beebo.org/",id:"jjjj"}
 //
-// Server request:
+// Example server request:
 //
 //   $ http_proxy=http://127.0.0.1:8081/ wget -q -S -O - http://client5f99eaa4/
 //
-// ... client response:
+// ... leading to the client response:
 //
 //   {"type":"response",body:"jjjj","id":"36057424"}
 
-require.paths.unshift("../node-scylla/lib");           // http://github.com/ithinkihaveacat/node-scylla
-require.paths.unshift("../node-websocket-server/lib"); // http://github.com/miksago/node-websocket-server
+require.paths.unshift("../node-scylla/lib");
 require.paths.unshift("lib");
 
 DEBUG = true;
 
-var sys = require('sys'),
-    http = require('http'),
-    ws = require("ws"), 
+var sys = require("sys"),
+    http = require("http"),
     hydra = require("hydra"),
     Server = require("hydra/static");
 
-// The static webserver.
+var external = http.createServer();
+external.on('request', new Server(["htdocs", "../Socket.IO"]).adapter('nodejs'));
+external.listen(8080);
+sys.puts("External Httpd listening at http://127.0.0.1:8080/");
 
-http.createServer(new Server(["htdocs", "../web-socket-js"]).adapter('nodejs')).listen(8080);
-sys.puts("Static Httpd listening at http://127.0.0.1:8080/");
+var internal = http.createServer();
+internal.listen(8081);
+sys.puts("Internal Httpd listening at http://127.0.0.1:8081/");
 
-// The WebSockets server.  This requires two ports: one to initiate the connection,
-// and another to handle the socket communication itself.
-
-hydra.create(http.createServer, ws.createServer).listen(8081, 8082);
+hydra.listen(external, internal);
