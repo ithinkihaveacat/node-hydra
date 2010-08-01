@@ -6,7 +6,7 @@ function Http(websocket) {
 
     this.listeners = { };
 
-    websocket.on('connect', function() {
+    websocket.on('connect', function(c) {
         if (DEBUG) { console.log("WebSocket: connected"); }
     });
     
@@ -33,7 +33,6 @@ function Http(websocket) {
                         res.id = message.id;
                         res.type = "response";
                         if (DEBUG) { console.log("WebSocket: sending: " + JSON.stringify(res)); }
-                        // send() seems to behave inconsistently...
                         websocket.send(JSON.stringify(res));
                     });
                 } else {
@@ -75,16 +74,20 @@ Http.prototype.createClient = function(method, url, callback, args) {
     var id = Math.floor(Math.random() * 4294967296).toString(16);
 
     this.addListener(id, callback);
-    
-    // send() seems to behave inconsistently
-    
-    this.websocket.send(JSON.stringify([{
+
+    var message = JSON.stringify({
         type: "request",
         id: id,
         method: method,
         url: url,
         headers: args.headers || null,
         body: args.body || null
-    }]));
+    });
+
+    if (DEBUG) {
+        console.log("WebSocket: sending: " + message);
+    }
+    
+    this.websocket.send(message);
 
 }

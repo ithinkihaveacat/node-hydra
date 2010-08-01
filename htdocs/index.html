@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>Hydra Demo</title>
   
-  <script type="text/javascript" src="socket.io.js"></script>
+  <script type="text/javascript" src="socket.js"></script>
   <script>
       io.setPath('/');
   </script>
@@ -14,38 +14,71 @@
   <script type="text/javascript" src="hello.js"></script>
 
   <script type="text/javascript">
-  
-    DEBUG = true;
-  
+
     function init() {
 
+      DEBUG = true;
+
+      if (console && console.log) {
+          console.log = function(s) {
+              document.getElementById("console").innerHTML += s.replace("\n", "<br/>") + "<br/>";
+          }
+      }
+
       websocket = new io.Socket();
+      http = new Http(websocket);
       websocket.connect();
 
-      http = new Http(websocket);
-      
-      // Sets up a client side "server".  On the server, try:
-      //
-      //   $ export CLIENTID="client611851c0"
-      //   $ export http_proxy="http://127.0.0.1:8081/"
-      //   $ curl -s -i -X GET "http://$CLIENTID/"
-      //   $ curl -s -i -d 'Michael' -X PUT "http://$CLIENTID/"
-      //   $ curl -s -i -X GET "http://$CLIENTID/"
+    }
+
+    function start() {
 
       var hello = new Hello("Clem");
       http.createServer(hello.adapter());
-      
-      // Makes a server-side HTTP request
 
-      http.createClient('GET', 'http://localhost:8080/hello.txt', function(res) { console.log(res.body); });
+      console.log("HTTP server: started");
+      
+    }
+
+    function request() {
+
+      // Make HTTP requests from the browser.  (Like Ajax, but the requests are
+      // tunnelled over the WebSocket, and actually made on the server.)
+
+      var url = document.getElementById("url").value;
+      console.log("HTTP client: Request: " + url);
+      http.createClient('GET', url, function(res) { console.log("HTTP client: Response: " + res.body); });
 
     }
     
   </script>
+
 </head>
 
 <body onload="init();">
-    <p>Nothing much to see here&#8212view source and open Firebug!</p>
+    <h2>Examples</h2>
+    <h3>Client-side HTTP request</h3>
+    <p>Initiate a request from the browser.  This is similar to a proxied XHR request
+        (there's no cross-domain issues; you can retrieve any URL accessible to the 
+        <em>server</em> except that all traffic is tunnelled over the WebSocket.</p>
+    <input id="url" value="http://localhost:8080/hello.txt"></input>
+    <button onclick="javascript:request()">Request</button>
+    <h3>Server-side HTTP request</h3>
+    <p>Respond to HTTP requests coming from the server.  After hitting the start button
+        below to start the client-side HTTP server, execute the following commands
+        <em>on the server</em>.  For the correct <tt>CLIENTID</tt>, look for a
+    log message like "DEBUG: Client foo connected" on the server.</p>
+    <pre>
+    export CLIENTID="<span id="clientid"><strong>XXXXXX</strong></span>"
+    export http_proxy="http://127.0.0.1:8081/"
+    curl -s -i -X GET "http://$CLIENTID/"
+    curl -s -i -d 'Michael' -X PUT "http://$CLIENTID/"
+    curl -s -i -X GET "http://$CLIENTID/"
+    </pre>
+    <button onclick="javascript:start()">Start HTTP server</button>
+    <h2>Activity</h2>
+    <div style="font-family: monospace; border: 1px solid black; margin: 5px; padding: 5px; background-color: #c0c0c0;" id="console">
+    </div>
 </body>
 
 </html>

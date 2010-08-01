@@ -41,6 +41,8 @@ function Router() {
 
 Router.prototype.dispatch = function(req) {
 
+    if (DEBUG) { console.log("HTTP server: Request: " + req.url.href); }
+
     var i, l, parts, m = this.matchers[req.method] || [];
 
     for (i = 0, l = m.length; i < l; i++) {
