@@ -39,10 +39,10 @@ For the server:
     * <http://github.com/LearnBoost/Socket.IO-node.git> - WebSocket server
     * <http://github.com/LearnBoost/Socket.IO.git> - WebSocket client
   1. Start the server:
-
-        $ node run.js 
-        Static Httpd listening at http://127.0.0.1:8080/
-        Hydra: WebSocket server listening at http://127.0.0.1:8081
+      $ node run.js
+      External Httpd listening at http://127.0.0.1:8080/
+      Internal Proxy listening at http://127.0.0.1:8081/
+      1 Aug 15:57:07 - socket.io ready - accepting connections
 
 For the client:
 
@@ -58,11 +58,9 @@ Client-initiated requests:
 
   1. In Google Chrome, load <http://127.0.0.1:8080/>.
   2. In the JavaScript console, enter:
-  
         http.createClient('GET', 'http://beebo.org/', function(res) {
             console.log(res); 
         });
-        
      This arranges for the *server* to request <http://beebo.org>, and
      return the contents via the WebSocket.  The console should show the
      traffic moving back and forth.
@@ -70,13 +68,11 @@ Client-initiated requests:
 Server-initiated requests:
 
   1. On the server, enter
-
         $ export CLIENTID="client611851c0"
         $ export http_proxy="http://127.0.0.1:8081/"
         $ curl -s -i -X GET "http://$CLIENTID/"
         $ curl -s -i -d 'Michael' -X PUT "http://$CLIENTID/"
         $ curl -s -i -X GET "http://$CLIENTID/"
-
     where `client611851c0` is the client id.
   1. The first command should return `Clem`, and the second and third should
   return `Michael`.  This uses the sample server in `hello.js`.

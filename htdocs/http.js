@@ -34,7 +34,7 @@ function Http(websocket) {
                         res.type = "response";
                         if (DEBUG) { console.log("WebSocket: sending: " + JSON.stringify(res)); }
                         // send() seems to behave inconsistently...
-                        websocket.send(JSON.stringify([res]));
+                        websocket.send(JSON.stringify(res));
                     });
                 } else {
                     if (DEBUG) { console.log("WebSocket: no server for request: " + e.data); }

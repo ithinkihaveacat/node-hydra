@@ -36,6 +36,6 @@ sys.puts("External Httpd listening at http://127.0.0.1:8080/");
 
 var internal = http.createServer();
 internal.listen(8081);
-sys.puts("Internal Httpd listening at http://127.0.0.1:8081/");
+sys.puts("Internal Proxy listening at http://127.0.0.1:8081/");
 
 hydra.listen(external, internal);

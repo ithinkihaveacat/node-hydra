@@ -18,8 +18,8 @@
     DEBUG = true;
   
     function init() {
-    
-      websocket = new io.Socket('localhost');
+
+      websocket = new io.Socket();
       websocket.connect();
 
       http = new Http(websocket);
@@ -37,8 +37,6 @@
       
       // Makes a server-side HTTP request
 
-      http.createClient('GET', 'http://localhost:8080/hello.txt', function(res) { console.log(res.body); });
-      http.createClient('GET', 'http://localhost:8080/hello.txt', function(res) { console.log(res.body); });
       http.createClient('GET', 'http://localhost:8080/hello.txt', function(res) { console.log(res.body); });
 
     }
