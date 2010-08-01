@@ -33,9 +33,9 @@ natively; Firefox requires a Flash "shim".
   1. Download and install [NodeJS](http://nodejs.org/#download).
   1. With [`npm`](http://github.com/isaacs/npm#readme), install the [`socket.io`](http://github.com/isaacs/Socket.IO-node)
      [`scylla`](http://github.com/ithinkihaveacat/node-scylla) packages:
-        $ curl http://npmjs.org/install.sh | sh # If you don't already have npm
-        $ npm install socket.io
-        $ npm install scylla
+          $ curl http://npmjs.org/install.sh | sh # If you don't already have npm
+          $ npm install socket.io
+          $ npm install scylla
   1. Start the server:
           $ node demo.js
           External Httpd listening at http://127.0.0.1:8080/
