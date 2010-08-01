@@ -39,10 +39,10 @@ For the server:
     * <http://github.com/LearnBoost/Socket.IO-node.git> - WebSocket server
     * <http://github.com/LearnBoost/Socket.IO.git> - WebSocket client
   1. Start the server:
-        $ node run.js
-        External Httpd listening at http://127.0.0.1:8080/
-        Internal Proxy listening at http://127.0.0.1:8081/
-        1 Aug 15:57:07 - socket.io ready - accepting connections
+          $ node run.js
+          External Httpd listening at http://127.0.0.1:8080/
+          Internal Proxy listening at http://127.0.0.1:8081/
+          1 Aug 15:57:07 - socket.io ready - accepting connections
 
 For the client:
 
